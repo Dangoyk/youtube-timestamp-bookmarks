@@ -52,7 +52,7 @@ async function initialize() {
   try {
     await waitForElement('video');
     await waitForElement('.ytp-right-controls');
-    await waitForElement('.ytp-progress-bar-container');
+    await waitForElement('.ytp-progress-bar[role="slider"]');
   } catch {
     return;
   }
@@ -71,7 +71,7 @@ function injectBookmarkButton() {
   const btn = document.createElement('button');
   btn.className = 'ytp-button yt-bookmark-btn';
   btn.title = 'Add bookmark at current time';
-  btn.innerHTML = `<svg height="100%" viewBox="0 0 24 24" width="100%" fill="currentColor">
+  btn.innerHTML = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
     <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
   </svg>`;
   btn.addEventListener('click', onBookmarkClick);
@@ -79,19 +79,27 @@ function injectBookmarkButton() {
 }
 
 function renderMarker(wrapper, bookmark, duration) {
-  const marker = document.createElement('div');
-  marker.className = 'yt-bookmark-marker';
-  marker.dataset.time = bookmark.time;
-  marker.dataset.id = bookmark.id;
-  marker.style.left = `${(bookmark.time / duration) * 100}%`;
-  marker.title = `Bookmark: ${bookmark.label}`;
-  marker.addEventListener('click', onMarkerClick);
-  wrapper.appendChild(marker);
+  // Outer div is the wide snap/click zone (invisible)
+  const snapZone = document.createElement('div');
+  snapZone.className = 'yt-bookmark-marker';
+  snapZone.dataset.time = bookmark.time;
+  snapZone.dataset.id = bookmark.id;
+  snapZone.style.left = `${(bookmark.time / duration) * 100}%`;
+  snapZone.title = `${bookmark.label} — click to jump`;
+  snapZone.addEventListener('click', onMarkerClick);
+
+  // Inner div is the visible red line
+  const line = document.createElement('div');
+  line.className = 'yt-bookmark-marker-line';
+  snapZone.appendChild(line);
+
+  wrapper.appendChild(snapZone);
 }
 
 async function renderAllMarkers(videoId) {
   const video = document.querySelector('video');
-  const progressBar = document.querySelector('.ytp-progress-bar-container');
+  // Target the actual slider div — same element YouTube uses for chapter markers
+  const progressBar = document.querySelector('.ytp-progress-bar[role="slider"]');
   if (!video || !progressBar) return;
 
   if (!video.duration || !isFinite(video.duration)) {

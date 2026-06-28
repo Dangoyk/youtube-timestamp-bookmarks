@@ -1,32 +1,15 @@
-.yt-bookmark-markers {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 50;
-}
-
-.yt-bookmark-marker {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  transform: translateX(-50%);
-  background-color: #ff4e45;
-  border-radius: 2px;
-  pointer-events: auto;
-  cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.1s ease;
-}
-
-.yt-bookmark-marker:hover {
-  background-color: #ff0000;
-  transform: translateX(-50%) scaleY(1.4);
-}
+/* ── Bookmark button ──────────────────────────────────────── */
 
 .yt-bookmark-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  padding: 0 !important;
+  vertical-align: top !important;
   opacity: 0.9;
-  transition: opacity 0.1s ease, color 0.3s ease;
   color: #fff;
+  transition: opacity 0.1s ease, color 0.3s ease;
 }
 
 .yt-bookmark-btn:hover {
@@ -35,4 +18,63 @@
 
 .yt-bookmark-btn--saved {
   color: #ff4e45;
+}
+
+/* ── Marker container ─────────────────────────────────────── */
+
+.yt-bookmark-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 51;
+}
+
+/* ── Snap zone (wide transparent hit area) ────────────────── */
+
+.yt-bookmark-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* ── Visible red line ─────────────────────────────────────── */
+
+.yt-bookmark-marker-line {
+  width: 2px;
+  flex-shrink: 0;
+  background: #ff4e45;
+  border-radius: 1px;
+  position: relative;
+  transition: width 0.1s ease, background-color 0.1s ease;
+}
+
+/* Dot on top of the line for extra visibility */
+.yt-bookmark-marker-line::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #ff4e45;
+  border-radius: 50%;
+  transition: background-color 0.1s ease, transform 0.1s ease;
+}
+
+.yt-bookmark-marker:hover .yt-bookmark-marker-line {
+  width: 3px;
+  background: #ff2010;
+}
+
+.yt-bookmark-marker:hover .yt-bookmark-marker-line::before {
+  background: #ff2010;
+  transform: translateX(-50%) scale(1.4);
 }
