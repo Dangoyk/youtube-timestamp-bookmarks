@@ -1,0 +1,38 @@
+.yt-bookmark-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.yt-bookmark-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  transform: translateX(-50%);
+  background-color: #ff4e45;
+  border-radius: 2px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+}
+
+.yt-bookmark-marker:hover {
+  background-color: #ff0000;
+  transform: translateX(-50%) scaleY(1.4);
+}
+
+.yt-bookmark-btn {
+  opacity: 0.9;
+  transition: opacity 0.1s ease, color 0.3s ease;
+  color: #fff;
+}
+
+.yt-bookmark-btn:hover {
+  opacity: 1;
+}
+
+.yt-bookmark-btn--saved {
+  color: #ff4e45;
+}
